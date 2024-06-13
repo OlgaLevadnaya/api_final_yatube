@@ -52,7 +52,6 @@ class Comment(models.Model):
 
 
 class Group(models.Model):
-
     title = models.CharField(max_length=256)
     slug = models.SlugField(unique=True)
     description = models.TextField()
@@ -62,7 +61,6 @@ class Group(models.Model):
 
 
 class Follow(models.Model):
-
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -70,13 +68,15 @@ class Follow(models.Model):
         null=True,
         blank=True
     )
-
     following = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         related_name='following',
         null=True,
         blank=True)
+
+    class Meta:
+        unique_together = ('user', 'following')
 
     def __str__(self):
         return f'{self.user.username} подписан на {self.following.username}'
